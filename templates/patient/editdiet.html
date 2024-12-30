@@ -1,0 +1,228 @@
+{% extends 'patient/dashboardbase.html' %}
+
+
+{% block content %}
+{% if msg is not None %}
+    <div class="alert alert-success">
+  <strong>Success!</strong> {{ msg }}.
+</div>
+    {% endif %}
+
+
+    <div id="login">
+
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div style="height: 500px" id="sign-box" class="col-md-12">
+
+                        <form id="schedule-form" method="post" class="form">
+                            {% csrf_token %}
+
+                            <h3 class="text-center text-info">Edit Schedule</h3>
+
+                            <div class="form-group">
+
+                                <input type="hidden" value="{{ data.id }}"  name="tbId"  class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="food_item" class="text-info">Food Item:</label><br>
+                                <input type="text" value="{{ data.fooditem }}" required name="tbFoodName" id="tbFoodName" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="foodtiming" class="text-info">Select Timing:</label><br>
+                                <input style="width:390px;height: 30px" value="{{ data.foodtimes }}"  type="time" name="tbTime" id="tbTime">
+                             <button type="button" id="button_timing" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button type="button" id="button_timing_clear" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+
+                            </div>
+                            <div class="form-group">
+                                <p id="timing">
+
+
+                                </p>
+                                <input type="hidden" value="{{ data.foodtimes }}" id="tbHiddenTime" name="tbHiddenTime"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="foodday" class="text-info">Food Day:</label><br>
+                               <select style="width:390px;height: 30px"  name="foodday" id="foodday">
+                                   <option value="Daily">All Days</option>
+                                   <option value="Sunday">Sunday</option>
+                                   <option value="Mon">Monday</option>
+                                   <option value="Tuesday">Tuesday</option>
+                                   <option value="Wednesday">Wednesday</option>
+                                   <option value="Thursday">Thursday</option>
+                                   <option value="Friday">Friday</option>
+                                   <option value="Saturday">Saturday</option>
+
+                               </select>
+                                <button type="button" id="button_days_plus" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button type="button" id="button_days_clear" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+
+
+                            </div>
+
+                            <div class="form-group">
+<p id="days">
+
+</p>
+ <input value="{{ data.foodtakenday }}" type="hidden" id="tbHiddenDays" name="tbHiddenDays"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="foodduration" class="text-info">Food Duration:</label><br>
+                                <input type="text" value="{{ data.takenduration }}" required name="tbDuration" id="tbDuration" class="form-control">
+                            </div>
+                            <div class="form-group">
+
+                                <input type="submit" id="btnCreate" name="submit" class="btn btn-info btn-md" value="Submit">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+    $(document).ready(
+        function ()
+        {
+            var times="";
+            var days="";
+           //code for timings--------------------------------
+
+        $("#button_timing").click(
+            function ()
+            {
+                if(times!="")
+                     times=times+","+$("#tbTime").val();
+                else
+                   times=times+$("#tbTime").val();
+
+                $("#timing").html(times);
+                $("#tbHiddenTime").val(times)
+                console.log( "rrrrr-----"+$("#tbHiddenTime").val());
+
+
+
+            }
+
+        );
+
+           // clear button-----------
+            $("#button_timing_clear").click(
+            function ()
+            {
+
+                $("#timing").html("");
+
+
+
+
+            }
+
+        );
+
+
+       //code for food days----------------------
+            $("#button_days_plus").click(
+            function ()
+            {
+                if(days!="")
+                     days=days+","+$("#foodday").val();
+                else
+                   days=days+$("#foodday").val();
+
+                $("#days").html(days);
+                $("#tbHiddenDays").val(days)
+                console.log( "ddddddddddd-----"+$("#tbHiddenDays").val());
+
+
+
+            }
+
+        );
+            // clear button-----------
+            $("#button_days_clear").click(
+            function ()
+            {
+
+                $("#days").html("");
+                $("#tbHiddenDays").val("")
+
+
+
+
+            }
+
+        );
+
+            //validation...
+
+             $("#btnCreate").click(
+            function ()
+            {
+
+
+               var days=$("#tbHiddenDays").val()
+                var timings=$("#tbHiddenTime").val()
+
+                if(days=="" &&timings=="")
+                {
+                    alert("Please add your Schedule days and times")
+                    return false;
+
+                }else
+                    if(days=="")
+                    {
+                     alert("Please add your Schedule days")
+                    return false;
+
+                    }
+                 else
+                     if(timings=="")
+                     {
+                       alert("Please add your Schedule time")
+                    return false;
+                     }
+                 else
+                     {
+                         return true;
+                     }
+
+
+
+
+            }
+
+        );
+
+
+
+
+
+
+        }
+
+    );
+
+    </script>
+
+{% endblock %}

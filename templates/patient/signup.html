@@ -1,0 +1,100 @@
+
+{% extends 'patient/loginbase.html' %}
+
+
+
+
+
+{% block content %}
+{% if msg is not None %}
+    <div class="alert alert-success">
+  <strong>Success!</strong> {{ msg }}.
+</div>
+    {% endif %}
+
+
+    <div id="login">
+
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="sign-box" class="col-md-12">
+
+                        <form id="sign-form" method="post" class="form">
+                            {% csrf_token %}
+
+                            <h3 class="text-center text-info">Patient Sign Up</h3>
+                            <div class="form-group">
+                                <label for="username" class="text-info">Name:</label><br>
+                                <input type="text" required name="tbName" id="tbName" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="text-info">Email Id:</label><br>
+                                <input type="email" name="tbEmail" id="tbEmail" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">Password:</label><br>
+                                <input type="password" required name="tbPassword" id="tbPassword" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="confpassword" class="text-info">Confirm Password:</label><br>
+                                <input type="password" required name="tbPassword" id="tbConfPassword" class="form-control">
+                            </div>
+                            <div class="form-group">
+
+                                <input type="submit" id="btnCreate" name="submit" class="btn btn-info btn-md" value="Create Account">
+                            </div>
+                            <div id="register-link" class="text-right">
+                                <a href="{% url 'login_view' %}" class="text-info">Login here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+   $(document).ready(
+       function()
+       {
+$("#btnCreate").click(
+    function ()
+    {
+        var pwd,cpwd;
+        pwd=$("#tbPassword").val();
+        cpwd=$("#tbConfPassword").val();
+        if(pwd!=cpwd)
+        {
+            alert("Password doest not match with confirm password");
+        return false;
+
+        }
+        else
+        {
+            return true;
+
+        }
+
+
+
+    }
+);
+
+
+
+       }
+);
+
+
+</script>
+
+{% endblock %}
